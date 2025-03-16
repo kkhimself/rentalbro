@@ -155,11 +155,11 @@ function calculateIrr(
   initialInvestment: number,
   cashFlows: number[],
   proceedsFromSale: number
-): number | null {
+): number {
   const precision = 0.0001;
-  let minRate: number = -1;
-  let maxRate: number = 1;
-  let result: number | null = null;
+  let minRate = -1;
+  let maxRate = 1;
+  let result = NaN;
 
   for (let i = 0; i < 100; i++) {
     const guessRate: number = (minRate + maxRate) / 2;
