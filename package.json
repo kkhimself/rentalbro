@@ -1,7 +1,7 @@
 {
-  "name": "react-typescript",
+  "name": "rental-bro",
   "version": "1.0.0",
-  "description": "React and TypeScript example starter project",
+  "description": "Tools for investment properties",
   "keywords": [
     "typescript",
     "react",

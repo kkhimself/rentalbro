@@ -1,2 +1,8 @@
-# rentalbro-ui
-Created with CodeSandbox
+# Rental Bro
+
+Tools for investment properties
+
+## Development
+
+- npm run start
+- npm run build
