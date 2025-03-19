@@ -1,15 +1,8 @@
 import "@mantine/core/styles.css";
-import {
-  AppShell,
-  Center,
-  NumberInput,
-  Table,
-  MantineProvider,
-} from "@mantine/core";
+import { AppShell, Center, NumberInput, MantineProvider } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import * as RentalMetrics from './utils/RentalMetrics';
-import CashFlow from "./components/CashFlow";
-
+import RentalProperty from "./models/RentalProperty";
+import PropertyInsights from "./components/PropertyInsights";
 
 export default function App() {
   const form = useForm({
@@ -34,98 +27,24 @@ export default function App() {
     // TODO: Validate input
   });
 
-  // Purchase costs
-  const propertyPurchasePrice = form.getValues().purchasePrice;
-  const downPaymentPercent = form.getValues().downPaymentPercent / 100;
-  const downPayment = propertyPurchasePrice * downPaymentPercent;
-  const initialInvestment = downPayment;
-  // TODO: Add closing cost, renovation etc.
-
-  // Mortgage
-  const mortgageRate = form.getValues().mortgageRate / 100;
-  const mortgageTerm = form.getValues().mortgageTerm; // Years
-  const mortgage = RentalMetrics.calculateMortgage(
-    propertyPurchasePrice - downPayment,
-    mortgageRate,
-    mortgageTerm
-  ); // Monthly
-  const mortgageAnnual = mortgage * 12;
-  // TODO: Tax benefits of mortgage
-
-  // Operating expenses
-  const propertyTaxes = form.getValues().propertyTaxes; // Annual
-  const hoaFeesMonthly = form.getValues().hoaFeesMonthly; // Monthly
-  const hoaFeesAnnual = hoaFeesMonthly * 12; // Annual
-  const homeInsurance = form.getValues().homeInsurance; // Annual
-  const maintenanceCosts = form.getValues().maintenanceCosts; // Annual
-  const operatingExpenses =
-    propertyTaxes + hoaFeesAnnual + homeInsurance + maintenanceCosts; // Annual
-  // TODO: Any tax benefits?
-
-  // Revenues
-  const rentMonthly = form.getValues().rentMonthly;
-  const averageVacancy = form.getValues().averageVacancy; // Days per Year
-  const vacancyRate = averageVacancy / 365;
-  const revenueAnnual = rentMonthly * 12 * (1 - vacancyRate);
-  // TODO: Tax on rental income?
-
-  // Growth rate
-  const rentGrowthRate = form.getValues().rentGrowthRate / 100; // Annual
-  const propertyValueGrowthRate =
-    form.getValues().propertyValueGrowthRate / 100; // Annual
-  const inflationRate = form.getValues().inflationRate / 100; // Annual, for insurance, maintenance etc.
-
-  // How long to keep the property
-  const holdingPeriod = form.getValues().holdingPeriod;
-  const discountRate = form.getValues().discountRate / 100; // Average long-term return of S&P 500
-
-  // Sale of property
-  const propertySalePrice =
-    propertyPurchasePrice *
-    Math.pow(1 + propertyValueGrowthRate, holdingPeriod); // TODO: numberOfYears - 1?
-  const salesCommissionRate = form.getValues().salesCommissionRate / 100;
-  const mortgagePayoff = RentalMetrics.calculateMortgageBalance(
-    propertyPurchasePrice - downPayment,
-    mortgageRate,
-    mortgageTerm,
-    holdingPeriod * 12
+  const rentalProperty = new RentalProperty(
+    form.getValues().purchasePrice,
+    form.getValues().downPaymentPercent / 100,
+    form.getValues().mortgageRate / 100,
+    form.getValues().mortgageTerm,
+    form.getValues().propertyTaxes,
+    form.getValues().hoaFeesMonthly,
+    form.getValues().homeInsurance,
+    form.getValues().maintenanceCosts,
+    form.getValues().rentMonthly,
+    form.getValues().averageVacancy,
+    form.getValues().rentGrowthRate / 100,
+    form.getValues().propertyValueGrowthRate / 100,
+    form.getValues().inflationRate / 100,
+    form.getValues().holdingPeriod,
+    form.getValues().discountRate / 100,
+    form.getValues().salesCommissionRate / 100
   );
-  const proceedsFromSale =
-    propertySalePrice -
-    propertySalePrice * salesCommissionRate -
-    mortgagePayoff;
-  // TODO: Tax implications of sale
-
-  const cashFlows = RentalMetrics.calculateCashFlows(
-    mortgageAnnual,
-    holdingPeriod,
-    revenueAnnual,
-    rentGrowthRate,
-    operatingExpenses,
-    inflationRate
-  );
-
-  const npv = RentalMetrics.calculateNpv(
-    discountRate,
-    initialInvestment,
-    cashFlows,
-    proceedsFromSale
-  );
-
-  const irr = RentalMetrics.calculateIrr(initialInvestment, cashFlows, proceedsFromSale);
-
-  // Cash-on-Cash Return for Year 1
-  const coc = cashFlows[0] / initialInvestment;
-
-  // Gross Rent Multiplier for Year 1
-  const grm = propertyPurchasePrice / (rentMonthly * 12);
-
-  // Capitalization Rate for Year 1
-  // Cap Rate ignores mortgage financing
-  const capRate = (revenueAnnual - operatingExpenses) / propertyPurchasePrice;
-
-  // Debt Service Coverage Ratio
-  const dscr = (revenueAnnual - operatingExpenses) / mortgageAnnual;
 
   return (
     <MantineProvider>
@@ -147,7 +66,7 @@ export default function App() {
                   description={new Intl.NumberFormat("en-US", {
                     style: "currency",
                     currency: "USD",
-                  }).format(downPayment)}
+                  }).format(rentalProperty.downPayment)}
                   suffix="%"
                   min={0}
                   max={100}
@@ -277,115 +196,7 @@ export default function App() {
                 />
               </form>
 
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Mortgage (Annual)</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(mortgageAnnual)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Operating Expenses (Annual)</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(operatingExpenses)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Revenue (Annual)</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(revenueAnnual)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Property Value at {holdingPeriod} years</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(propertySalePrice)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Proceeds from Sale</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(proceedsFromSale)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>NPV</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(npv)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>IRR</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "percent",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(irr)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Cash-on-Cash Return (Year 1)</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "percent",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(coc)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Capitalization Rate (Year 1)</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "percent",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(capRate)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Debt Service Coverage Ratio (Year 1)</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "decimal",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(dscr)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Gross Rent Multiplier (Year 1)</td>
-                    <td>
-                      {new Intl.NumberFormat("en-US", {
-                        style: "decimal",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(grm)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <CashFlow cashFlows={cashFlows} />
+              <PropertyInsights p={rentalProperty} />
             </div>
           </Center>
         </AppShell.Main>
