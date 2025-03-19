@@ -1,11 +1,19 @@
 {
   "name": "rental-bro",
   "version": "1.0.0",
-  "description": "Tools for investment properties",
+  "description": "App that provides instant insights to help you make smarter real estate investment decisions.",
   "keywords": [
-    "typescript",
-    "react",
-    "starter"
+    "rental-property",
+    "real-estate",
+    "investment-calculator",
+    "real-estate-investing",
+    "irr",
+    "cap-rate",
+    "cash-on-cash-return",
+    "roi",
+    "npv",
+    "rental-yield",
+    "property-analysis"
   ],
   "main": "src/index.tsx",
   "dependencies": {
