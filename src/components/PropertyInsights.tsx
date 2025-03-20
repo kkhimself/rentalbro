@@ -2,10 +2,13 @@ import RentalProperty from "../models/RentalProperty";
 import CashFlow from "./CashFlow";
 
 interface PropertyInsightsProps {
-  p: RentalProperty;
+  rentalProperty: RentalProperty;
 }
 
-export default function PropertyInsights({ p }: PropertyInsightsProps) {
+export default function PropertyInsights({ rentalProperty }: PropertyInsightsProps) {
+
+  const p = rentalProperty;
+  
   return (
     <div>
       <table>

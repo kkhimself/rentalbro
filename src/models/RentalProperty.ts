@@ -7,16 +7,22 @@ export default class RentalProperty {
 
     // Mortgage
     public downPaymentPercent: number;
+
     public mortgageRate: number;
-    public mortgageTerm: number; // Years
+
+    /**
+     * The length of time to repay a loan in years.  
+     */
+    public mortgageTerm: number;
+
     get downPayment(): number {
-        return this.propertyPurchasePrice * this.downPaymentPercent;
+        return this.propertyPurchasePrice * this.downPaymentPercent / 100;
     }
 
     get mortgageMonthly() {
         return RentalMetrics.calculateMortgage(
             this.propertyPurchasePrice - this.downPayment,
-            this.mortgageRate,
+            this.mortgageRate / 100,
             this.mortgageTerm
         );
     }
@@ -32,12 +38,14 @@ export default class RentalProperty {
 
     // Operating expenses
     public propertyTaxesAnnual: number; // Annual
+
     public hoaFeesMonthly: number; // Monthly
 
     get hoaFeesAnnual() {
         return this.hoaFeesMonthly * 12;
     }
     public homeInsuranceAnnual: number; // Annual
+
     public maintenanceCostsAnnual: number; // Annual
 
     get operatingExpensesAnnual() {
@@ -47,6 +55,7 @@ export default class RentalProperty {
 
     // Revenues
     public rentMonthly: number;
+
     public averageVacancy: number; // Days per Year
 
     get vacancyRate() {
@@ -60,31 +69,37 @@ export default class RentalProperty {
 
     // Growth rate
     public rentGrowthRate: number; // Annual
+
     public propertyValueGrowthRate: number; // Annual
+
     public inflationRate: number; // Annual, for insurance, maintenance etc.
 
     // How long to keep the property
     public holdingPeriod: number; // Years
+
     public discountRate: number; // Average long-term return of S&P 500
 
     // Sale of property
     // TODO: numberOfYears - 1?
     get propertySalePrice() {
         return this.propertyPurchasePrice *
-            Math.pow(1 + this.propertyValueGrowthRate, this.holdingPeriod);
+            Math.pow(1 + this.propertyValueGrowthRate/100, this.holdingPeriod);
     }
 
+    /**
+     * Real estate agent's commission % for selling property
+     */
     public salesCommissionRate: number;
-    
+
     get mortgagePayoff() {
         return RentalMetrics.calculateMortgageBalance(
             this.propertyPurchasePrice - this.downPayment,
-            this.mortgageRate,
+            this.mortgageRate / 100,
             this.mortgageTerm, this.holdingPeriod * 12);
     }
 
     get proceedsFromSale() {
-        return this.propertySalePrice - this.propertySalePrice * this.salesCommissionRate - this.mortgagePayoff;
+        return this.propertySalePrice - this.propertySalePrice * this.salesCommissionRate / 100 - this.mortgagePayoff;
     }
     // TODO: Tax implications of sale
 
@@ -119,15 +134,15 @@ export default class RentalProperty {
             this.mortgageAnnual,
             this.holdingPeriod,
             this.revenueAnnual,
-            this.rentGrowthRate,
+            this.rentGrowthRate / 100,
             this.operatingExpensesAnnual,
-            this.inflationRate
+            this.inflationRate / 100
         );
     }
 
     get npv() {
         return RentalMetrics.calculateNpv(
-            this.discountRate,
+            this.discountRate / 100,
             this.initialInvestment,
             this.cashFlows,
             this.proceedsFromSale
