@@ -84,6 +84,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Mortgage Interest Rate"
+        description="Annual interest rate on the mortgage loan."
         suffix="%"
         min={0}
         max={20}
@@ -93,6 +94,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Mortgage Loan Term (Years)"
+        description="Duration of the mortgage loan. Common terms are 15, 20, or 30 years."
         min={0}
         max={50}
         step={5}
@@ -109,6 +111,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="HOA Fees (Monthly)"
+        description="Homeowner's Association fees."
         prefix="$"
         thousandSeparator=","
         hideControls
@@ -125,6 +128,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Maintenance Costs (Yearly)"
+        description="Cost of repairs, maintenance, and improvements."
         prefix="$"
         thousandSeparator=","
         hideControls
@@ -141,6 +145,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Vacancy Rate (Days per Year)"
+        description="Number of days the property may be vacant per year. Average is 10-30 days per year."
         min={0}
         max={366}
         step={10}
@@ -148,7 +153,8 @@ export default function PropertyVariables({
         {...form.getInputProps("averageVacancy")}
       />
       <NumberInput
-        label="Rental Growth Rate"
+        label="Rent Growth Rate"
+        description="Annual growth rate of rent. Average is 1-3.5% per year in the US."
         suffix="%"
         min={0}
         max={50}
@@ -158,6 +164,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Property Appreciation Rate"
+        description="Annual growth rate of property value. Average is 2.5-5% per year in the US."
         suffix="%"
         min={0}
         max={50}
@@ -167,6 +174,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Inflation Rate"
+        description="Annual rate of inflation for insurance, maintenance, and other expenses. Average is 2-3% per year in the US."
         suffix="%"
         min={0}
         max={25}
@@ -176,8 +184,8 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Discount Rate"
-        suffix="%"
-        description="Opportunity cost of capital or the expected return from alternative investments, such as average returns of the S&P 500 stock market index"
+        description="Opportunity cost of capital or the expected return from alternative investments, such as average returns of the S&P 500 stock market index."
+        suffix="%"        
         min={0}
         max={25}
         step={0.5}
@@ -186,7 +194,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Holding Period (Years)"
-        description="Duration of time you will own the property before selling it"
+        description="Duration of time you will own the property before selling it."
         min={0}
         max={50}
         step={5}
@@ -195,6 +203,7 @@ export default function PropertyVariables({
       />
       <NumberInput
         label="Real Estate Agent's Commission"
+        description="Percentage of the property sale price that goes to the real estate agent when selling the property. Average is 5-6% in the US."
         suffix="%"
         min={0}
         max={25}
