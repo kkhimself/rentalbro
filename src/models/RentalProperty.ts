@@ -83,7 +83,7 @@ export default class RentalProperty {
     // TODO: numberOfYears - 1?
     get propertySalePrice() {
         return this.propertyPurchasePrice *
-            Math.pow(1 + this.propertyValueGrowthRate/100, this.holdingPeriod);
+            Math.pow(1 + this.propertyValueGrowthRate / 100, this.holdingPeriod);
     }
 
     /**
@@ -154,7 +154,7 @@ export default class RentalProperty {
             this.initialInvestment,
             this.cashFlows,
             this.proceedsFromSale
-        );
+        ) * 100;
     }
 
     // Cash-on-Cash Return for Year 1

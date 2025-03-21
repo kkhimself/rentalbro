@@ -47,7 +47,7 @@ export default function App() {
             <AppShell.Main>
               <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                  <Paper shadow="md" p="xl" radius="md">
+                  <Paper shadow="sm" p="xs" radius="md">
                     <PropertyVariables
                       rentalProperty={rentalProperty}
                       updateRentalProperty={updateRentalProperty}
@@ -55,7 +55,7 @@ export default function App() {
                   </Paper>
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6 }}>
-                  <Paper shadow="xs" p="xl" radius="md">
+                  <Paper shadow="sm" p="xs" radius="md">
                     <PropertyInsights rentalProperty={rentalProperty} />
                   </Paper>
                 </Grid.Col>
