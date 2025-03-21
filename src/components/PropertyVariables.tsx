@@ -39,7 +39,7 @@ export default function PropertyVariables({
         new RentalProperty(
           values.propertyPurchasePrice,
           values.downPaymentPercent,
-          values.mortgageRate / 100,
+          values.mortgageRate,
           values.mortgageTerm,
           values.propertyTaxesAnnual,
           values.hoaFeesMonthly,
@@ -47,11 +47,11 @@ export default function PropertyVariables({
           values.maintenanceCostsAnnual,
           values.rentMonthly,
           values.averageVacancy,
-          values.rentGrowthRate / 100,
-          values.propertyValueGrowthRate / 100,
-          values.inflationRate / 100,
+          values.rentGrowthRate,
+          values.propertyValueGrowthRate,
+          values.inflationRate,
           values.holdingPeriod,
-          values.discountRate / 100,
+          values.discountRate,
           values.salesCommissionRate
         )
       );
