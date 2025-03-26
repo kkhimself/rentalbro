@@ -157,6 +157,14 @@ export default class RentalProperty {
         ) * 100;
     }
 
+    get totalReturn() {
+        return RentalMetrics.calculateTotalReturn(
+            this.initialInvestment,
+            this.cashFlows,
+            this.proceedsFromSale
+        );
+    }
+
     // Cash-on-Cash Return for Year 1
     get coc() {
         return this.cashFlows[0] / this.initialInvestment;
