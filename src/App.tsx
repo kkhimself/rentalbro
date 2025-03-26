@@ -5,7 +5,9 @@ import {
   Grid,
   Paper,
   MantineProvider,
+  Center,
 } from "@mantine/core";
+import { useHeadroom } from '@mantine/hooks';
 import RentalProperty from "./models/RentalProperty";
 import PropertyVariables from "./components/PropertyVariables";
 import PropertyInsights from "./components/PropertyInsights";
@@ -13,6 +15,8 @@ import ScrollTop from "./components/ScrollTop";
 import "@mantine/core/styles.css";
 
 export default function App() {
+  const pinned = useHeadroom({ fixedAt: 60 });
+
   // Set default values
   const [rentalProperty, setRentalProperty] = React.useState<RentalProperty>(
     new RentalProperty(
@@ -43,8 +47,13 @@ export default function App() {
     <MantineProvider>
       <div className="App">
         <Container>
-          <AppShell padding="xs" header={{ height: 30 }}>
-            <AppShell.Main>
+          <AppShell padding="xs" header={{ height: 30, collapsed: !pinned, offset: false }}>
+            <AppShell.Header>
+              <Center>
+                <div>RENTAL BRO</div>
+              </Center>
+            </AppShell.Header>
+            <AppShell.Main pt="40">
               <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
                   <Paper shadow="sm" p="xs" radius="md">
