@@ -77,7 +77,14 @@ export default class RentalProperty {
     // How long to keep the property
     public holdingPeriod: number; // Years
 
-    public discountRate: number; // Average long-term return of S&P 500
+    public discountRate: number; // Average annual return of S&P 500
+
+    /**
+     * Total return of S&P 500 over the holding period
+     */
+    get discountRateTotalReturn() {
+        return Math.pow(1 + this.discountRate / 100, this.holdingPeriod) - 1;
+    }
 
     // Sale of property
     // TODO: numberOfYears - 1?
