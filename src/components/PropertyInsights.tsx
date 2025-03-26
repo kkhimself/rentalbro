@@ -19,7 +19,7 @@ export default function PropertyInsights({
           <Stat
             title="IRR"
             color={p.irr > p.discountRate ? "lime" : "orange"}
-            description="Internal Rate of Return (IRR) measures the annualized return on your real estate investment by analyzing projected cash flows, including rental income, expenses, and the future sale price. A higher IRR indicates a more attractive investment. If IRR exceeds your discount rate (the return you'd expect from investing in the S&P 500), the rental property is a better investment than simply investing in the stock market."
+            description="Internal Rate of Return (IRR) measures the <b>annualized</b> return on your real estate investment by analyzing projected cash flows, including rental income, expenses, and the future sale price. A higher IRR indicates a more attractive investment. If IRR exceeds your discount rate (the return you'd expect from investing in the S&P 500), the rental property is a better investment than simply investing in the stock market."
             value={new Intl.NumberFormat("en-US", {
               style: "percent",
               minimumFractionDigits: 2,
@@ -27,18 +27,18 @@ export default function PropertyInsights({
             }).format(p.irr / 100)}
           />
         </Grid.Col>
-        {/* <Grid.Col span={{ base: 12, md: 6 }}>
+        <Grid.Col span={{ base: 12, md: 6 }}>
           <Stat
-            title="Cash Flow"
-            color={p.cashFlows[0] > 0 ? "lime" : "orange"}
-            description="Cash flow is the money left over each month or year after collecting rent and paying all expenses, including mortgage payments, property taxes, insurance, and maintenance. Cash flow is crucial because it determines whether the property is profitable or a financial burden. Positive cash flow means the investment generates income, while negative cash flow means the investor may need to cover shortfalls out of pocket. Consistent positive cash flow provides financial stability, helps pay down debt, and can be reinvested into more properties to build wealth."
+            title="Total Return"
+            color={p.totalReturn > 0 ? "lime" : "orange"}
+            description="Total Return measures the overall profit or loss of an investment over a period, considering both income and appreciation, expressed as a percentage of the initial investment. It's a simple way to track growth. On the other hand, IRR takes into account the <b>timing</b> of cash flows, showing the average <b>annual</b> growth rate and helping to understand how quickly your investment is growing. While total return gives a broad picture, IRR provides a more precise measure of investment efficiency."
             value={new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-              maximumFractionDigits: 0,
-            }).format(p.cashFlows[0])}
+              style: "percent",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(p.totalReturn)}
           />
-        </Grid.Col> */}
+        </Grid.Col>
       </Grid>
 
       <table>
@@ -95,16 +95,6 @@ export default function PropertyInsights({
                 style: "currency",
                 currency: "USD",
               }).format(p.npv)}
-            </td>
-          </tr>
-          <tr>
-            <td>IRR</td>
-            <td>
-              {new Intl.NumberFormat("en-US", {
-                style: "percent",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              }).format(p.irr)}
             </td>
           </tr>
           <tr>

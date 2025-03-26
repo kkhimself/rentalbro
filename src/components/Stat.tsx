@@ -22,7 +22,7 @@ export default function Stat({ title, value, color, description }: StatProps) {
   return (
     <>
       <Modal opened={modalOpened} onClose={close} title={title} centered>
-        <Text size="sm">{description}</Text>
+        <Text size="sm" dangerouslySetInnerHTML={{__html: description ?? ""}} />
       </Modal>
 
       <Paper withBorder p="md" radius="md" shadow="xs">

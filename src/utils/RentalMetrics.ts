@@ -94,3 +94,12 @@
   
     return result;
   }
+
+  export function calculateTotalReturn(
+    initialInvestment: number,
+    cashFlows: number[],
+    proceedsFromSale: number
+  ): number {
+    const totalCashFlow = cashFlows.reduce((a, b) => a + b, 0);
+    return (totalCashFlow + proceedsFromSale - initialInvestment) / initialInvestment;
+  }
