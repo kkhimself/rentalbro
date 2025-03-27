@@ -12,7 +12,7 @@ export default function ScrollTop() {
           <Tooltip label="Scroll to top">
             <ActionIcon
               size={42}
-              variant="filled"
+              variant="light"
               aria-label="Scroll to top"
               style={transitionStyles}
               onClick={() => scrollTo({ y: 0 })}
