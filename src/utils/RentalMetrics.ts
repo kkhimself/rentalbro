@@ -56,9 +56,9 @@
   ): number {
     let npv = -initialInvestment;
     for (let t = 0; t < cashFlows.length; t++) {
-      npv += cashFlows[t] / Math.pow(1 + discountRate, t);
+      npv += cashFlows[t] / Math.pow(1 + discountRate, t + 1);
     }
-    npv += proceedsFromSale / Math.pow(1 + discountRate, cashFlows.length - 1);
+    npv += proceedsFromSale / Math.pow(1 + discountRate, cashFlows.length);
     return npv;
   }
   
@@ -77,10 +77,10 @@
       let npv: number = -initialInvestment;
   
       for (let t = 0; t < cashFlows.length; t++) {
-        npv += cashFlows[t] / Math.pow(1 + guessRate, t);
+        npv += cashFlows[t] / Math.pow(1 + guessRate, t + 1);
       }
   
-      npv += proceedsFromSale / Math.pow(1 + guessRate, cashFlows.length - 1);
+      npv += proceedsFromSale / Math.pow(1 + guessRate, cashFlows.length);
   
       if (Math.abs(npv) < precision) {
         result = guessRate;
@@ -95,11 +95,20 @@
     return result;
   }
 
-  export function calculateTotalReturn(
+  export function calculateGrossReturn(
     initialInvestment: number,
     cashFlows: number[],
     proceedsFromSale: number
   ): number {
     const totalCashFlow = cashFlows.reduce((a, b) => a + b, 0);
     return (totalCashFlow + proceedsFromSale - initialInvestment) / initialInvestment;
+  }
+
+  export function calculateCagr(
+    initialInvestment: number,
+    cashFlows: number[],
+    proceedsFromSale: number
+  ): number {
+    const totalCashFlow = cashFlows.reduce((a, b) => a + b, 0);
+    return Math.pow((totalCashFlow + proceedsFromSale) / initialInvestment, (1 / cashFlows.length)) - 1;
   }

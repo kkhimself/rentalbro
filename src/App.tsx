@@ -1,13 +1,15 @@
 import React from "react";
 import {
   AppShell,
+  ActionIcon,
   Container,
   Grid,
+  Group,
   Paper,
-  MantineProvider,
-  Center,
+  MantineProvider
 } from "@mantine/core";
-import { useHeadroom } from '@mantine/hooks';
+import { useHeadroom } from "@mantine/hooks";
+import { IconBrandGithub } from '@tabler/icons-react';
 import RentalProperty from "./models/RentalProperty";
 import PropertyVariables from "./components/PropertyVariables";
 import PropertyInsights from "./components/PropertyInsights";
@@ -33,7 +35,7 @@ export default function App() {
       2, // Rent Growth Rate
       5, // Property Value Growth Rate
       3, // Inflation Rate
-      5, // Holding Period
+      10, // Holding Period
       10, // Discount Rate
       6 // Sales Commission Rate
     )
@@ -43,17 +45,29 @@ export default function App() {
     setRentalProperty(p);
   };
 
+  const openGitHub = () => {
+    window.open("https://github.com/kkhimself/rentalbro");
+  };
+
   return (
     <MantineProvider>
       <div className="App">
-        <Container>
-          <AppShell padding="xs" header={{ height: 30, collapsed: !pinned, offset: false }}>
-            <AppShell.Header>
-              <Center>
-                <div>RENTAL BRO</div>
-              </Center>
-            </AppShell.Header>
-            <AppShell.Main pt="40">
+        <AppShell
+          padding="xs"
+          header={{ height: 30, collapsed: !pinned, offset: false }}
+        >
+          <AppShell.Header>
+            <Container>
+              <Group justify="space-between">
+                <div style={{margin: "auto"}}>RENTAL BRO</div>
+                <ActionIcon variant="subtle" aria-label="GitHub" onClick={openGitHub}>
+                  <IconBrandGithub style={{ width: '80%', height: '80%' }} />
+                </ActionIcon>
+              </Group>
+            </Container>
+          </AppShell.Header>
+          <AppShell.Main pt="40">
+            <Container>
               <Grid>
                 <Grid.Col span={{ base: 12, md: 6 }}>
                   <Paper shadow="sm" p="xs" radius="md">
@@ -69,10 +83,10 @@ export default function App() {
                   </Paper>
                 </Grid.Col>
               </Grid>
-            </AppShell.Main>
-          </AppShell>
-          <ScrollTop />
-        </Container>
+            </Container>
+          </AppShell.Main>
+        </AppShell>
+        <ScrollTop />
       </div>
     </MantineProvider>
   );
