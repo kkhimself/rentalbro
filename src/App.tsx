@@ -33,7 +33,7 @@ export default function App() {
       2, // Rent Growth Rate
       5, // Property Value Growth Rate
       3, // Inflation Rate
-      5, // Holding Period
+      10, // Holding Period
       10, // Discount Rate
       6 // Sales Commission Rate
     )

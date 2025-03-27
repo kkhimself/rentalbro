@@ -30,13 +30,25 @@ export default function PropertyInsights({
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Stat
             title="Total Return"
-            color={p.totalReturn > p.discountRateTotalReturn ? "lime" : "orange"}
+            color={p.grossReturn > p.discountRateTotalReturn ? "lime" : "orange"}
             description={`<p>Total Return measures the overall profit or loss of an investment over a period, considering both income and appreciation, expressed as a percentage of the initial investment. It's a simple way to track growth. On the other hand, IRR takes into account the <b>timing</b> of cash flows, showing the average <b>annual</b> growth rate and helping to understand how quickly your investment is growing. While total return gives a broad picture, IRR provides a more precise measure of investment efficiency.</p> <p>If the Total Return of the rental property exceeds the Total Return of your alternate investments (e.g. investing in the S&P 500), the rental property is a better investment. The Total Return of your alternate investment, over ${p.holdingPeriod} years, based on your discount rate, is ${(p.discountRateTotalReturn * 100).toFixed(2)}% </p>`}
             value={new Intl.NumberFormat("en-US", {
               style: "percent",
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
-            }).format(p.totalReturn)}
+            }).format(p.grossReturn)}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <Stat
+            title="CAGR"
+            color={p.cagr > p.discountRate ? "lime" : "orange"}
+            description="CAGR (Compound Annual Growth Rate) measures the average annual growth rate of your total return (cash flow + appreciation) over time. It is a simplified way to understand long-term returns. Unlike IRR, CAGR gives a single average growth rate, ignoring cash flow timing. IRR considers the timing of cash flows, making it a better measure of investment efficiency."
+            value={new Intl.NumberFormat("en-US", {
+              style: "percent",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(p.cagr / 100)}
           />
         </Grid.Col>
       </Grid>
