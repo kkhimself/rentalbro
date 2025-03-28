@@ -151,7 +151,7 @@ export default class RentalProperty {
         return RentalMetrics.calculateNpv(
             this.discountRate / 100,
             this.initialInvestment,
-            this.cashFlows,
+            this.cashFlows.map((c) => c.cashFlow),
             this.proceedsFromSale
         );
     }
@@ -159,7 +159,7 @@ export default class RentalProperty {
     get irr() {
         return RentalMetrics.calculateIrr(
             this.initialInvestment,
-            this.cashFlows,
+            this.cashFlows.map((c) => c.cashFlow),
             this.proceedsFromSale
         ) * 100;
     }
@@ -167,7 +167,7 @@ export default class RentalProperty {
     get grossReturn() {
         return RentalMetrics.calculateGrossReturn(
             this.initialInvestment,
-            this.cashFlows,
+            this.cashFlows.map((c) => c.cashFlow),
             this.proceedsFromSale
         );
     }
@@ -175,14 +175,14 @@ export default class RentalProperty {
     get cagr() {
         return RentalMetrics.calculateCagr(
             this.initialInvestment,
-            this.cashFlows,
+            this.cashFlows.map((c) => c.cashFlow),
             this.proceedsFromSale
         ) * 100;
     }
 
     // Cash-on-Cash Return for Year 1
     get coc() {
-        return this.cashFlows[0] / this.initialInvestment;
+        return this.cashFlows.map((c) => c.cashFlow)[0] / this.initialInvestment;
     }
 
     // Gross Rent Multiplier for Year 1
