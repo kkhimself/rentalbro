@@ -1,11 +1,13 @@
 import React from "react";
 import {
+  createTheme,
   AppShell,
   ActionIcon,
   Container,
   Grid,
   Group,
   Paper,
+  Text,
   MantineProvider
 } from "@mantine/core";
 import { useHeadroom } from "@mantine/hooks";
@@ -41,6 +43,10 @@ export default function App() {
     )
   );
 
+  const theme = createTheme({
+    primaryColor: "gray"
+  });
+
   const updateRentalProperty = (p: RentalProperty) => {
     setRentalProperty(p);
   };
@@ -50,7 +56,7 @@ export default function App() {
   };
 
   return (
-    <MantineProvider>
+    <MantineProvider theme={theme}>
       <div className="App">
         <AppShell
           padding="xs"
@@ -59,7 +65,7 @@ export default function App() {
           <AppShell.Header>
             <Container>
               <Group justify="space-between">
-                <div style={{margin: "auto"}}>RENTAL BRO</div>
+                <div style={{margin: "auto"}}><Text fw={700}>RENTAL BRO</Text></div>
                 <ActionIcon variant="subtle" aria-label="GitHub" onClick={openGitHub}>
                   <IconBrandGithub style={{ width: '80%', height: '80%' }} />
                 </ActionIcon>
