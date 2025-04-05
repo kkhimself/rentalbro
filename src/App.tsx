@@ -25,6 +25,11 @@ export default function App() {
   const [rentalProperty, setRentalProperty] = React.useState<RentalProperty>(
     new RentalProperty(
       435000, // Purchase Price
+      435000 * .02, // Closing Costs
+      true, // Include Closing Costs in Loan
+      0, // Renovation Costs
+      false, // Include Renovation Costs in Loan
+      0, // Other Initial Costs
       25, // Down Payment Percent
       5.75, // Mortgage Rate
       30, // Mortgage Term
@@ -35,7 +40,7 @@ export default function App() {
       2700, // Rent Monthly
       20, // Average Vacancy
       2, // Rent Growth Rate
-      5, // Property Value Growth Rate
+      4.5, // Property Value Growth Rate
       3, // Inflation Rate
       10, // Holding Period
       10, // Discount Rate

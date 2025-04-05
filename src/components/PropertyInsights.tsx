@@ -72,6 +72,15 @@ export default function PropertyInsights({
             <Table striped withRowBorders={false}>
               <Table.Tbody>
                 <Table.Tr>
+                  <Table.Td>Mortgage loan amount</Table.Td>
+                  <Table.Td>
+                    {new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(p.loanAmount)}
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
                   <Table.Td>Mortgage (monthly)</Table.Td>
                   <Table.Td>
                     {new Intl.NumberFormat("en-US", {

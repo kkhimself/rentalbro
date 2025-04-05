@@ -1,4 +1,4 @@
-import { Accordion, NumberInput } from "@mantine/core";
+import { Accordion, Checkbox, Grid, NumberInput, Text, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import RentalProperty from "../models/RentalProperty";
 
@@ -17,6 +17,11 @@ export default function PropertyVariables({
   const form = useForm({
     initialValues: {
       propertyPurchasePrice: p.propertyPurchasePrice,
+      closingCosts: p.closingCosts,
+      includeClosingCostsInLoan: p.includeClosingCostsInLoan,
+      renovationCosts: p.renovationCosts,
+      includeRenovationCostsInLoan: p.includeRenovationCostsInLoan,
+      otherInitialCosts: p.otherInitialCosts,
       downPaymentPercent: p.downPaymentPercent,
       mortgageRate: p.mortgageRate,
       mortgageTerm: p.mortgageTerm,
@@ -38,6 +43,11 @@ export default function PropertyVariables({
       updateRentalProperty(
         new RentalProperty(
           values.propertyPurchasePrice,
+          values.closingCosts,
+          values.includeClosingCostsInLoan, 
+          values.renovationCosts,
+          values.includeRenovationCostsInLoan,
+          values.otherInitialCosts,
           values.downPaymentPercent,
           values.mortgageRate,
           values.mortgageTerm,
@@ -61,7 +71,7 @@ export default function PropertyVariables({
 
   return (
     <form>
-      <Accordion variant="separated" multiple defaultValue={["1", "2", "3", "4", "5"]}>
+      <Accordion variant="separated" multiple defaultValue={["1", "2", "3", "4"]}>
         <Accordion.Item value="1">
           <Accordion.Control>Property Purchase</Accordion.Control>
           <Accordion.Panel>
@@ -72,6 +82,70 @@ export default function PropertyVariables({
               hideControls
               key={form.key("propertyPurchasePrice")}
               {...form.getInputProps("propertyPurchasePrice")}
+            />
+
+            <Title size="sm" fw={500} style={{ lineHeight: 1.3, margin: "0.4em 0" }}>
+              Closing Costs
+            </Title>
+            <Text size="xs" c="dimmed" style={{ lineHeight: 1.2, margin: "0.4em 0" }}>
+              Costs incurred during the purchase of the property, such as loan fees, title insurance, 
+              appraisal fees, and attorney fees. Typically 2-5% of the purchase price.
+            </Text>
+            <Grid justify="space-between" align="center">
+              <Grid.Col span="auto">
+                <NumberInput
+                  prefix="$"
+                  thousandSeparator=","
+                  hideControls
+                  key={form.key("closingCosts")}
+                  {...form.getInputProps("closingCosts")}
+                />
+              </Grid.Col>
+              <Grid.Col span="content">
+                <Checkbox
+                  label="Include in Loan"
+                  variant="outline"
+                  key={form.key("includeClosingCostsInLoan")}
+                  {...form.getInputProps("includeClosingCostsInLoan", { type: 'checkbox' })}
+                />
+              </Grid.Col>
+            </Grid>
+
+            <Title size="sm" fw={500} style={{ lineHeight: 1.3, margin: "0.4em 0" }}>
+              Renovation Costs
+            </Title>
+            <Text size="xs" c="dimmed" style={{ lineHeight: 1.2, margin: "0.4em 0" }}>
+              Costs for repairs, upgrades, or improvements to the property. Light renovation like paint, 
+              flooring, minor fixes for a 1,500 sq. ft. home typically costs $15K - $40K.
+            </Text>
+            <Grid justify="space-between" align="center">
+              <Grid.Col span="auto">
+                <NumberInput
+                  prefix="$"
+                  thousandSeparator=","
+                  hideControls
+                  key={form.key("renovationCosts")}
+                  {...form.getInputProps("renovationCosts")}
+                />
+              </Grid.Col>
+              <Grid.Col span="content">
+                <Checkbox              
+                  label="Include in Loan"
+                  variant="outline"
+                  key={form.key("includeRenovationCostsInLoan")}
+                  {...form.getInputProps("includeRenovationCostsInLoan", { type: 'checkbox' })}
+                />
+              </Grid.Col>
+            </Grid>
+            
+            <NumberInput
+              label="Other Initial Costs"
+              description="Other costs incurred during the purchase of the property, like utility setup fees."
+              prefix="$"
+              thousandSeparator=","
+              hideControls
+              key={form.key("otherInitialCosts")}
+              {...form.getInputProps("otherInitialCosts")}
             />
           </Accordion.Panel>
         </Accordion.Item>
@@ -115,6 +189,29 @@ export default function PropertyVariables({
         </Accordion.Item>
 
         <Accordion.Item value="3">
+          <Accordion.Control>Rental Income</Accordion.Control>
+          <Accordion.Panel>
+            <NumberInput
+              label="Rent (Monthly)"
+              prefix="$"
+              thousandSeparator=","
+              hideControls
+              key={form.key("rentMonthly")}
+              {...form.getInputProps("rentMonthly")}
+            />
+            <NumberInput
+              label="Vacancy Rate (Days per Year)"
+              description="Number of days the property may be vacant per year. Average is 10-30 days per year."
+              min={0}
+              max={366}
+              step={10}
+              key={form.key("averageVacancy")}
+              {...form.getInputProps("averageVacancy")}
+            />
+          </Accordion.Panel>
+        </Accordion.Item>
+
+        <Accordion.Item value="4">
           <Accordion.Control>Ongoing Expenses</Accordion.Control>
           <Accordion.Panel>
             <NumberInput
@@ -152,30 +249,7 @@ export default function PropertyVariables({
               {...form.getInputProps("maintenanceCostsAnnual")}
             />            
           </Accordion.Panel>
-        </Accordion.Item>
-
-        <Accordion.Item value="4">
-          <Accordion.Control>Rental Income</Accordion.Control>
-          <Accordion.Panel>
-            <NumberInput
-              label="Rent (Monthly)"
-              prefix="$"
-              thousandSeparator=","
-              hideControls
-              key={form.key("rentMonthly")}
-              {...form.getInputProps("rentMonthly")}
-            />
-            <NumberInput
-              label="Vacancy Rate (Days per Year)"
-              description="Number of days the property may be vacant per year. Average is 10-30 days per year."
-              min={0}
-              max={366}
-              step={10}
-              key={form.key("averageVacancy")}
-              {...form.getInputProps("averageVacancy")}
-            />
-          </Accordion.Panel>
-        </Accordion.Item>
+        </Accordion.Item>       
 
         <Accordion.Item value="5">
           <Accordion.Control>Property Sale</Accordion.Control>

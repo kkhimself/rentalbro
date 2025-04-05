@@ -3,25 +3,44 @@ import * as RentalMetrics from '../utils/RentalMetrics';
 export default class RentalProperty {
     // Initial costs
     public propertyPurchasePrice: number;
-    // TODO: Add closing cost, renovation etc.
+
+    public closingCosts: number;
+
+    public includeClosingCostsInLoan: boolean;
+
+    public renovationCosts: number;
+
+    public includeRenovationCostsInLoan: boolean;
+
+    public otherInitialCosts: number;
 
     // Mortgage
     public downPaymentPercent: number;
+
+    get downPayment(): number {
+        return (this.propertyPurchasePrice + 
+            (this.includeClosingCostsInLoan ? this.closingCosts : 0) + 
+            (this.includeRenovationCostsInLoan ? this.renovationCosts : 0)) * 
+            this.downPaymentPercent / 100;
+    }
+
+    get loanAmount(): number {
+        return this.propertyPurchasePrice + 
+        (this.includeClosingCostsInLoan ? this.closingCosts : 0) + 
+        (this.includeRenovationCostsInLoan ? this.renovationCosts : 0) - 
+        this.downPayment;
+    }
 
     public mortgageRate: number;
 
     /**
      * The length of time to repay a loan in years.  
      */
-    public mortgageTerm: number;
-
-    get downPayment(): number {
-        return this.propertyPurchasePrice * this.downPaymentPercent / 100;
-    }
+    public mortgageTerm: number;    
 
     get mortgageMonthly() {
         return RentalMetrics.calculateMortgage(
-            this.propertyPurchasePrice - this.downPayment,
+            this.loanAmount,
             this.mortgageRate / 100,
             this.mortgageTerm
         );
@@ -32,7 +51,10 @@ export default class RentalProperty {
     }
 
     get initialInvestment(): number {
-        return this.downPayment;
+        return this.downPayment + 
+        (this.includeClosingCostsInLoan ? 0 : this.closingCosts) + 
+        (this.includeRenovationCostsInLoan ? 0 : this.renovationCosts) + 
+        this.otherInitialCosts;
     }
     // TODO: Tax benefits of mortgage
 
@@ -87,7 +109,6 @@ export default class RentalProperty {
     }
 
     // Sale of property
-    // TODO: numberOfYears - 1?
     get propertySalePrice() {
         return this.propertyPurchasePrice *
             Math.pow(1 + this.propertyValueGrowthRate / 100, this.holdingPeriod);
@@ -100,7 +121,7 @@ export default class RentalProperty {
 
     get mortgagePayoff() {
         return RentalMetrics.calculateMortgageBalance(
-            this.propertyPurchasePrice - this.downPayment,
+            this.loanAmount,
             this.mortgageRate / 100,
             this.mortgageTerm, this.holdingPeriod * 12);
     }
@@ -110,11 +131,19 @@ export default class RentalProperty {
     }
     // TODO: Tax implications of sale
 
-    constructor(propertyPurchasePrice: number, downPaymentPercent: number, mortgageRate: number, mortgageTerm: number, propertyTaxesAnnual: number,
-        hoaFeesMonthly: number, homeInsuranceAnnual: number, maintenanceCostsAnnual: number, rentMonthly: number, averageVacancy: number,
-        rentGrowthRate: number, propertyValueGrowthRate: number, inflationRate: number, holdingPeriod: number, discountRate: number, salesCommissionRate: number
+    constructor(propertyPurchasePrice: number, closingCosts: number, includeClosingCostsInLoan: boolean, renovationCosts: number, includeRenovationCostsInLoan: boolean, otherInitialCosts: number,
+        downPaymentPercent: number, mortgageRate: number, mortgageTerm: number, 
+        propertyTaxesAnnual: number, hoaFeesMonthly: number, homeInsuranceAnnual: number, maintenanceCostsAnnual: number, 
+        rentMonthly: number, averageVacancy: number,
+        rentGrowthRate: number, propertyValueGrowthRate: number, inflationRate: number, 
+        holdingPeriod: number, discountRate: number, salesCommissionRate: number
     ) {
         this.propertyPurchasePrice = propertyPurchasePrice;
+        this.closingCosts = closingCosts;
+        this.includeClosingCostsInLoan = includeClosingCostsInLoan;
+        this.renovationCosts = renovationCosts;
+        this.includeRenovationCostsInLoan = includeRenovationCostsInLoan;
+        this.otherInitialCosts = otherInitialCosts;
         this.downPaymentPercent = downPaymentPercent;
         this.mortgageRate = mortgageRate;
         this.mortgageTerm = mortgageTerm;
